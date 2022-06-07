@@ -1,0 +1,81 @@
+--USING HARRY POTTER CHAPTER DATABASE
+
+--Columns of database include: Chapter ID, Chapter Name, Movie ID, Movie Chapter
+
+--Chapter ID = Unique identifier for each chapter
+--Chapter Name = Name of the chapter in the movie script
+--Movie ID = Unique identifier for each movie
+--Movie Chapter = Chapter number within each movie script
+
+SELECT DISTINCT "Movie ID"
+FROM harrypotter.dbo.Chapters;
+
+--Yields:
+Movie ID
+ Blood and Bone"
+ Grimmauld Place"
+ Perfect and Prune"
+ Truly Free"
+1
+2
+3
+4
+5
+6
+7
+8
+
+--For some reason, the Movie ID was yielding part of the Chapter names.
+--Upon further investigation, I discovered that the column is being split in comma separated strings.
+
+--To fix this, I decided to update the table and set the correct values for the row. Let's see what happens!
+
+UPDATE harrypotter.dbo.Chapters
+SET [Chapter Name] = 'Flesh, Blood and Bone'
+WHERE [Chapter ID] = 126;
+
+UPDATE harrypotter.dbo.Chapters
+SET [Chapter Name] = 'Number Twelve, Grimmauld Place', [Movie ID] = 5
+WHERE [Chapter ID] = 133;
+
+UPDATE harrypotter.dbo.Chapters
+SET [Chapter Name] = 'Preserve, Perfect and Prune', [Movie ID] = 5
+WHERE [Chapter ID] = 139;
+
+UPDATE harrypotter.dbo.Chapters
+SET [Chapter Name] = 'Truly Seen, Truly Free', [Movie ID] = 3
+WHERE [Chapter ID] = 100;
+
+SELECT DISTINCT [Movie ID]
+FROM harrypotter.dbo.Chapters;
+
+--Yields:
+Movie ID
+1
+2
+3
+4
+5
+6
+7
+8
+
+--IT WORKED! It took me a little while to figure out the issue (and my handy friend Google was also my silent helper), but I managed to fix the problem.
+
+SELECT [Movie ID] AS "Movie Number", COUNT(*)
+FROM harrypotter.dbo.Chapters
+GROUP BY [Movie ID]
+ORDER BY 2 DESC;
+
+--Yields:
+Movie Number  Number of Chapters
+2           	36
+1           	34
+3           	33
+4           	27
+5           	27
+6           	26
+8	            26
+7	            25
+
+--It looks like Movie 2 (Chamber of Secrets) had the most Chapters, followed closely by Movie 1 (Sorcerer's Stone) and Movie 3 (Prisoner of Azkaban). 
