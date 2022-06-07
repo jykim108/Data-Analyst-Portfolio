@@ -1,0 +1,119 @@
+--USING HARRY POTTER CHARACTERS DATABASE
+
+--Columns of database include: Character ID, Character Name, Species, Gender, House, Patronus, Wand (Wood), Wand (Core)
+--Let's see how many, and what types, of wands there are!
+
+SELECT DISTINCT [Wand (Wood)] AS "Wand Material", COUNT(*)
+FROM harrypotter.dbo.Characters
+WHERE [Wand (Wood)] <> ''
+GROUP BY [Wand (Wood)]
+ORDER BY 2 DESC;
+
+--Yields:
+Cherry	2
+Yew	2
+Alder	1
+Birch	1
+Cedar	1
+Chestnut	1
+Cypress	1
+Elder	1
+Elm	1
+Fir	1
+Hawthorn	1
+Hazel	1
+Holly	1
+Hornbeam	1
+Mahogany	1
+Oak	1
+Vine	1
+Walnut	1
+Willow	1
+
+SELECT DISTINCT [Wand (Core)] AS "Wand Core", COUNT(*)
+FROM harrypotter.dbo.Characters
+WHERE [Wand (Core)] <> ''
+GROUP BY [Wand (Core)]
+ORDER BY 2 DESC;
+
+--Yields:
+Dragon Heartstring	9
+Unicorn Hair	5
+Phoenix Feather	3
+Thestral Tail Hair	1
+
+
+--How about species of characters?
+
+SELECT DISTINCT [Species], COUNT(*)
+FROM harrypotter.dbo.Characters
+WHERE [Species] <> ''
+GROUP BY [Species]
+ORDER BY 2 DESC;
+
+--Yields:
+Human	104
+Ghost	4
+Centaur	3
+Werewolf	2
+Goblin	2
+Half-Human/Half-Giant	2
+House Elf	2
+Giant	1
+Acromantula	1
+Basilisk	1
+Human (Part-Goblin)	1
+Human (Quarter-Veela)	1
+Human (Werewolf traits)	1
+
+
+--Okay, let's dive into the different Houses: Gryffindor, Ravenclaw, Hufflepuff, and Slytherin. Is there a relation between gender and the House?
+
+SELECT [House], [Gender], COUNT(*)
+FROM harrypotter.dbo.Characters
+GROUP BY [House], [Gender]
+HAVING [House] <> '' AND [Gender] <> ''
+ORDER BY 3 DESC;
+
+--Yields
+Gryffindor	Male	21
+Slytherin	Male	14
+Gryffindor	Female	9
+Ravenclaw	Female	6
+Slytherin	Female	6
+Ravenclaw	Male	6
+Hufflepuff	Female	4
+Hufflepuff	Male	4
+Beauxbatons Academy of Magic	Female	2
+Durmstrang Institute	Male	2
+Gryffindor	Human	1
+
+--Gryffindor and Slytherin are primarily male-dominant from the Character list, while Ravenclaw and Hufflepuff have equal distributions of male and female.
+--Of note, there were 41 Characters that had empty House and Gender columns, but 21 are non-human (as above) and therefore would not be included in this calculation.
+--There were also 35 males and 15 females that were not assigned to a House, so this is something to consider in the final numbers.
+--But what is this "Human" value instead of a Gender? Investigation of the dataset showed that "Nearly Headless Nick" was not assigned a gender.
+--For any avid Harry Potter fan, we know that Nearly Headless Nick is male, so let's update the table!
+
+UPDATE harrypotter.dbo.Characters
+SET [Gender] = 'Male'
+WHERE [Character ID] = 47;
+
+SELECT [House], [Gender], COUNT(*)
+FROM harrypotter.dbo.Characters
+GROUP BY [House], [Gender]
+HAVING [House] <> '' AND [Gender] <> ''
+AND [House] <> 'Durmstrang Institute' AND [House] <> 'Beauxbatons Academy of Magic'
+ORDER BY 3 DESC;
+
+
+--Yields:
+Gryffindor	Male	22
+Slytherin	Male	14
+Gryffindor	Female	9
+Ravenclaw	Female	6
+Slytherin	Female	6
+Ravenclaw	Male	6
+Hufflepuff	Male	4
+Hufflepuff	Female	4
+
+--That looks much better! I'd also like to point out that Durmstrang and Beauxbatons aren't technically Houses, so I removed those for accuracy's sake.
