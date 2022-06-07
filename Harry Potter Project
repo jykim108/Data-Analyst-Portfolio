@@ -1,0 +1,45 @@
+--MAVEN ANALYTICS HARRY POTTER DATABASE
+
+--This project utilizes the databased provided by Maven Analytics.
+--There are several tables (eg. Chapters, Characters, Movies) that I decided to analyze.
+--See my results/conclusions below!
+
+SELECT species, COUNT(*) AS 'total_count'
+FROM harrypotter.dbo.Characters
+WHERE species <> ''
+GROUP BY species
+ORDER BY COUNT(*) DESC;
+
+--Yields:
+species  total_count
+Human	104
+Ghost	4
+Centaur	3
+Werewolf	2
+Goblin	2
+Half-Human/Half-Giant	2
+House Elf	2
+Giant	1
+Acromantula	1
+Basilisk	1
+Human (Part-Goblin)	1
+Human (Quarter-Veela)	1
+Human (Werewolf traits)	1
+
+
+SELECT House, COUNT(*) AS 'house_count'
+FROM harrypotter.dbo.Characters
+WHERE House <> ''
+GROUP BY House
+ORDER BY house_count DESC;
+
+--Yields:
+House       house_count
+Gryffindor	31
+Slytherin	20
+Ravenclaw	12
+Hufflepuff	8
+Beauxbatons Academy of Magic	2
+Durmstrang Institute	2
+
+--CONCLUSION: Gryffindor has equivalent numbers of Slytherin and Ravenclaw combined.
