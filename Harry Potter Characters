@@ -117,3 +117,28 @@ Hufflepuff	Male	4
 Hufflepuff	Female	4
 
 --That looks much better! I'd also like to point out that Durmstrang and Beauxbatons aren't technically Houses, so I removed those for accuracy's sake.
+
+--I wonder what different types of Patronuses are listed? Let's take a look.
+
+SELECT DISTINCT [Patronus]
+FROM harrypotter.dbo.Characters
+WHERE [Patronus] <> '';
+
+--Yields:
+Boar
+Cat
+Doe
+Fox
+Goat
+Hare
+Horse
+Jack rabbit
+Jack Russell Terrier
+Lynx
+Otter
+Phoenix
+Squirrel
+Stag
+Swan
+Weasel
+Wolf
