@@ -1,0 +1,77 @@
+--USING HARRY POTTER MOVIES DATABASE
+
+--Columns include: Movie ID, Movie Title, Release Year, Runtime, Budget, Box Office
+--Let's take a look at the data.
+
+SELECT *
+FROM harrypotter.dbo.Movies;
+
+--Yields
+1	Harry Potter and the Philosopher's Stone	2001	152	"$125	000,000 ","$1,002,000,000 "
+2	Harry Potter and the Chamber of Secrets	2002	161	"$100	000,000 ","$880,300,000 "
+3	Harry Potter and the Prisoner of Azkaban	2004	142	"$130	000,000 ","$796,700,000 "
+4	Harry Potter and the Goblet of Fire	2005	157	"$150	000,000 ","$896,400,000 "
+5	Harry Potter and the Order of the Phoenix	2007	138	"$150	000,000 ","$942,000,000 "
+6	Harry Potter and the Half-Blood Prince	2009	153	"$250	000,000 ","$943,200,000 "
+7	Harry Potter and the Deathly Hallows Part 1	2010	146	"$200	000,000 ","$976,900,000 "
+8	Harry Potter and the Deathly Hallows Part 2	2011	130	"$250	000,000 ","$1,342,000,000 "
+
+--So I notice I'm having a similar problem that I had in the Chapters database where the column is being split in comma separated strings.
+--I will have to update the table to correct these values that were separated at the commas in the Budget column.
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '125,000,000', [Box Office] = '1,002,000,000'
+WHERE [Movie ID] = 1;
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '100,000,000', [Box Office] = '880,300,000'
+WHERE [Movie ID] = 2;
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '130,000,000', [Box Office] = '796,700.000'
+WHERE [Movie ID] = 3;
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '150,000,000', [Box Office] = '896,400.000'
+WHERE [Movie ID] = 4;
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '150,000,000', [Box Office] = '942,000,000'
+WHERE [Movie ID] = 5;
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '250,000,000', [Box Office] = '943,200,000'
+WHERE [Movie ID] = 6;
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '200,000,000', [Box Office] = '976,900,000'
+WHERE [Movie ID] = 7;
+
+UPDATE harrypotter.dbo.Movies
+SET [Budget] = '250,000,000', [Box Office] = '1,342,000,000'
+WHERE [Movie ID] = 8;
+
+SELECT *
+FROM harrypotter.dbo.Movies;
+
+--Yields:
+
+1	Harry Potter and the Philosopher's Stone	2001	152	125,000,000	1,002,000,000
+2	Harry Potter and the Chamber of Secrets	2002	161	100,000,000	880,300,000
+3	Harry Potter and the Prisoner of Azkaban	2004	142	130,000,000	796,700.000
+4	Harry Potter and the Goblet of Fire	2005	157	150,000,000	896,400.000
+5	Harry Potter and the Order of the Phoenix	2007	138	150,000,000	942,000,000
+6	Harry Potter and the Half-Blood Prince	2009	153	250,000,000	943,200,000
+7	Harry Potter and the Deathly Hallows Part 1	2010	146	200,000,000	976,900,000
+8	Harry Potter and the Deathly Hallows Part 2	2011	130	250,000,000	1,342,000,000
+
+--I also decided to remove the '$' symbol so I could run calculations.
+--I wonder which movies grossed the most money? 
+
+SELECT [Movie Title], ([Box Office] - [Budget]) AS 'Profit'
+FROM harrypotter.dbo.Movies
+ORDER BY 2 DESC;
+
+--Now I'm getting an error that the data types varchar and varchar are incompatible in the subtract operator.
+--Looks like I will have to change the column type for the Budget and Box Office to integer type. Let's see if this works.
+
