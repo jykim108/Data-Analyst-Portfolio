@@ -1,0 +1,61 @@
+--KAGGLE DATASET: usa_contagious_disease
+
+--I decided to put my SQL skills into practice using real datasets. I'm utilizing BigQuery for analyzing a dataset (usa_contagious_disease) available on Kaggle.
+--This public data is from the US Department of Health and Human Services.
+--It includes all weekly surveillance reports of nationally notifiable diseases for all U.S. cities and states published between 1888 and 2013. 
+--The data set consists of eight important vaccine-preventable contagious diseases: diphtheria, hepatitis A, measles, mumps, pertussis, polio, rubella and smallpox.
+
+SELECT state, disease, COUNT(cases)
+FROM practice-projects-380814.usa_contagious_disease.project_tycho_reports
+GROUP BY 1, 2
+HAVING COUNT(cases) > 1000
+ORDER BY 3 DESC;
+
+--Yields: 
+'''
+MA  DIPHTHERIA - 7616
+WI - DIPHTHERIA - 6780
+TX - DIPHTHERIA - 6548
+NY - DIPHTHERIA - 6505
+OH - DIPHTHERIA - 6140
+''''
+
+--Obviously, diphetheria is prominent, so I decided to group the contagious diseases by total number through the US instead to see if that yielded anything differently.
+
+SELECT disease, COUNT(cases)
+FROM practice-projects-380814.usa_contagious_disease.project_tycho_reports
+GROUP BY 1
+ORDER BY 2 DESC;
+
+--Yields: 
+'''
+Diphtheria - 158983
+Measles - 145167
+Pertussis - 109072
+Hepatitis A - 90839
+Polio - 81531
+Mumps - 69754
+Rubella - 53205
+Smallpox - 50916
+'''
+
+--Since I live in MI, I decided to see what diseases, and how many cases, affected MI specifically.
+
+SELECT disease, COUNT(cases)
+FROM practice-projects-380814.usa_contagious_disease.project_tycho_reports
+WHERE state = 'MI'
+GROUP BY 1
+ORDER BY 2 DESC;
+
+--Yields: 
+'''
+Diphtheria - 4781
+Measlers - 3425
+Pertussis - 2556
+Hepatitis A - 2063
+Polio - 1794
+Mumps - 1714
+Rubella - 1375
+Smallpox - 1057
+'''
+
