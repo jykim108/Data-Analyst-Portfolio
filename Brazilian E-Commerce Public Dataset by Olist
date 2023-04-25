@@ -1,12 +1,10 @@
 Using the dataset from Kaggle, I decided to embark on a journey of looking at the data and answering some questions.
 
-1. How often is the average order value for a second purchase, larger than the first purchase?
-2. What is the average order value by city?
-3. What’s the total value of orders that haven’t been delivered?
+1. What is the average order value by city?
+2. What’s the total value of orders that haven’t been delivered?
 
 
-
---To answer the second question, I had to join the customers and geolocation tables to find out the locations of the customers.
+--To answer the first question, I had to join the customers and geolocation tables to find out the locations of the customers.
 --Then, I had to also join the orders and items tables as well to find the number of items and prices per city.
 --Grouping the information by cities, I used SELECT AVG(price) to calculate the average price per city.
 --This was my first time doing multiple joins, so I did have to use my handy friend, Google, to figure out how to do it.
