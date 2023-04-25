@@ -1,0 +1,51 @@
+Using the dataset from Kaggle, I decided to embark on a journey of looking at the data and answering some questions.
+
+1. How often is the average order value for a second purchase, larger than the first purchase?
+2. What is the average order value by city?
+3. What’s the total value of orders that haven’t been delivered?
+
+
+
+--To answer the second question, I had to join the customers and geolocation tables to find out the locations of the customers.
+--Then, I had to also join the orders and items tables as well to find the number of items and prices per city.
+--Grouping the information by cities, I used SELECT AVG(price) to calculate the average price per city.
+--This was my first time doing multiple joins, so I did have to use my handy friend, Google, to figure out how to do it.
+
+SELECT customer_city, AVG(price) AS avg_price
+FROM `practice-projects-380814.braziliancommerce.customers` AS c
+INNER JOIN `practice-projects-380814.braziliancommerce.geolocation` AS g
+ON customer_zip_code_prefix = geolocation_zip_code_prefix
+INNER JOIN `practice-projects-380814.braziliancommerce.orders` AS o
+ON c.customer_id = o.customer_id
+INNER JOIN `practice-projects-380814.braziliancommerce.items` AS i
+ON o.order_id = i.order_id
+GROUP BY 1
+ORDER BY 2 DESC;
+
+--Yields:
+'''
+customer_city             avg_price
+pianco                    2200.0
+nova esperanca do piria   2199.0
+engenheiro navarro        1997.0
+agrestina                 1989.0
+mariental                 1799.0
+loreto                    1599.99
+ibitita                   1450.0
+pirpirituba               1340.0...
+'''
+
+
+--To answer the second question, I had to take the sum of items that had not been delivered.
+--This used the conditional WHERE statement to exclude any items that had been delivered.
+--Also, since I was finding the average price, I rounded the final number to 2 decimal places.
+
+SELECT ROUND(SUM(price), 2) AS avg_price_pending_items
+FROM `practice-projects-380814.braziliancommerce.items` AS i
+INNER JOIN `practice-projects-380814.braziliancommerce.orders` AS o
+ON i.order_id = o.order_id
+WHERE order_status != 'delivered';
+
+--Yields: 
+avg_price_pending_items
+370145.59
