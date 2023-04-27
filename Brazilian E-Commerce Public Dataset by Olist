@@ -2,6 +2,7 @@ Using the dataset from Kaggle, I decided to embark on a journey of looking at th
 
 1. What is the average order value by city?
 2. What’s the total value of orders that haven’t been delivered?
+3. What is the most purchased items by customer?
 
 
 --To answer the first question, I had to join the customers and geolocation tables to find out the locations of the customers.
@@ -47,3 +48,36 @@ WHERE order_status != 'delivered';
 --Yields: 
 avg_price_pending_items
 370145.59
+
+
+--To answer the final question, it took some trial and error with grouping.
+--I finally figured out that I needed to join multiple tables and group the correct fields to get my answer!
+
+SELECT c.customer_id, n.string_field_1 AS purchase_items, COUNT(n.string_field_1) AS number_of_purchase
+FROM `practice-projects-380814.braziliancommerce.customers` AS c
+INNER JOIN `practice-projects-380814.braziliancommerce.orders` AS o
+ON c.customer_id = o.customer_id
+INNER JOIN `practice-projects-380814.braziliancommerce.items` AS i
+ON o.order_id = i.order_id
+INNER JOIN `practice-projects-380814.braziliancommerce.products` AS p
+ON i.product_id = p.product_id
+INNER JOIN `practice-projects-380814.braziliancommerce.nametranslation` AS n
+ON p.product_category_name = n.string_field_0
+GROUP BY 1, 2
+ORDER BY 3 DESC
+LIMIT 10;
+
+
+--Yields:
+'''
+customer_id                           purchase_items          number_of_purchase
+bd5d39761aa56689a265d95d8d32b8be      auto                    20	
+be1b70680b9f9694d8c70f41fa3dc92b      computers_accessories   20
+10de381f8a8d23fff822753305f71cae      furniture_decor         15
+adb32467ecc74b53576d9d13a5a55891      garden_tools            15
+d5f2b3f597c7ccafbb5cac0bcc3d6024      garden_tools            14	
+a7693fba2ff9583c78751f2b66ecab9d      telephony               14
+7d321bd4e8ba1caf74c4c1aabd9ae524      telephony               13
+9eb3d566e87289dcb0acf28e1407c839      housewares              12	
+3b54b5978e9ace64a63f90d176ffb158      housewares              12
+'''
