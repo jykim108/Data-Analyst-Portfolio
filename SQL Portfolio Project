@@ -1,0 +1,43 @@
+[SQL Project based on the Alex the Analyst Data Analyst Bootcamp]
+--Utilized Covid Death/Vaccination Data from the following site: https://ourworldindata.org/covid-deaths
+
+--Looking at Total Cases vs. Total Deaths
+--Had to change data types to float/int, as they were saved as nvarchar
+
+SELECT Location, Date, total_cases, total_deaths, (CAST(total_deaths AS float)/CAST(total_cases AS float)) * 100 AS DeathPercentage
+FROM CovidDeaths
+WHERE Location LIKE '%states%'
+ORDER BY 1,2
+
+--Looking at Total Cases vs. Population
+SELECT Location, Date, population, total_cases, (CAST(total_cases AS float)/population) * 100 AS PercentPopulationInfected
+FROM CovidDeaths
+WHERE Location LIKE '%states%' 
+ORDER BY 1,2
+
+--Looking at Countries with Highest Infection Rate Compared to Population
+
+SELECT Location, population, MAX(total_cases) AS HighestInfectionCount, MAX(CAST(total_cases AS float)/population) * 100 AS PercentPopulationInfected
+FROM CovidDeaths
+WHERE continent IS NOT NULL
+GROUP BY Location, population
+ORDER BY PercentPopulationInfected DESC
+
+--Showing Countries with the Highest Death Count Per Population
+
+SELECT Location, population, MAX(CAST(total_deaths AS int)) AS HighestDeathCount, MAX(CAST(total_deaths AS int)/population) * 100 AS DeathPercentage
+FROM CovidDeaths
+WHERE continent IS NOT NULL
+GROUP BY Location, population
+ORDER BY DeathPercentage DESC
+
+--Looking into Total Deaths by Continent
+
+SELECT continent, MAX(CAST(total_deaths AS int)) AS TotalDeathCount
+FROM CovidDeaths
+WHERE continent IS NOT NULL
+GROUP BY continent
+ORDER BY TotalDeathCount DESC
+
+
+
