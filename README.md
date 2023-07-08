@@ -2,4 +2,4 @@
 
 On my path to becoming a data analyst, I decided that the best way to explore and showcase my skills is by getting my hands dirty and working directly with databases.
 
-I've been utilizing datasets from Maven Analytics and Kaggle to delve into the 'analysis' portion of my skills. I hope that, through these projects, I will be able to show my growth and understanding of this field, as well as offer some insight into some of the datasets I'll be looking at.
+I've completed the Google Data Analytics Certificate through Coursera/Google and am currently working on Alex Freberg's (also known as Alex the Analyst) Data Analyst Bootcamp on YouTube. I hope to include some interesting projects/insights for your perusal.
