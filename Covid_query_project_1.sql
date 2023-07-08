@@ -118,3 +118,15 @@ JOIN CovidDeaths AS death
 WHERE death.continent IS NOT NULL
 SELECT *, (RollingPeoplevaccinated/Population) * 100 AS PercentVaccinated
 FROM #PercentPopulationVaccinated
+
+
+--Creating a View for Total Cases by Country
+
+CREATE VIEW TotalCasesbyCountry AS
+SELECT death.Location, CAST(MAX(death.total_cases) AS bigint) AS total_cases
+FROM CovidDeaths AS death
+JOIN CovidVaccinations AS vac
+	ON death.continent = vac.continent 
+	AND death.date = vac.date
+WHERE death.continent IS NOT NULL
+GROUP BY death.Location
