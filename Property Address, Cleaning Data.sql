@@ -9,6 +9,7 @@ GO
 SELECT SaleDate, CONVERT(Date, SaleDate)
 FROM NashvilleHousing
 
+	
 UPDATE NashvilleHousing
 SET SaleDate = CONVERT(Date, SaleDate)
 
@@ -43,14 +44,12 @@ JOIN NashvilleHousing AS b
 WHERE a.PropertyAddress IS NULL
 
 
-
 --Breaking out Address into individual columns (Address, City, State)
 
 GO
 
 SELECT PropertyAddress
 FROM NashvilleHousing
-
 
 SELECT SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1) AS Address,
 SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) +1, LEN(PropertyAddress)) AS City
@@ -85,18 +84,19 @@ ADD OwnerSplitAddress nvarchar(100)
 UPDATE NashvilleHousing
 SET OwnerSplitAddress = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3)
 
+	
 ALTER TABLE NashvilleHousing
 ADD OwnerSplitCity nvarchar(100)
 
 UPDATE NashvilleHousing
 SET OwnerSplitCity = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2)
 
+	
 ALTER TABLE NashvilleHousing
 ADD OwnerSplitState nvarchar(100)
 
 UPDATE NashvilleHousing
 SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1)
-
 
 
 --Change Y and N to Yes and No in "Sold as Vacant field
@@ -143,13 +143,9 @@ FROM RowNumCTE
 WHERE row_num > 1
 
 
-
 --Remove Unused Columns
 
 GO
 
 ALTER TABLE NashvilleHousing
 DROP COLUMN OwnerAddress, PropertyAddress, TaxDistrict
-
-SELECT *
-FROM NashvilleHousing
