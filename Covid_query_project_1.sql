@@ -1,4 +1,4 @@
-[SQL Project based on the Alex the Analyst Data Analyst Bootcamp]
+[SQL Project based on the Alex Freberg Data Analyst Bootcamp]
 --Utilized Covid Death/Vaccination Data from the following site: https://ourworldindata.org/covid-deaths
 
 --Looking at Total Cases vs. Total Deaths
